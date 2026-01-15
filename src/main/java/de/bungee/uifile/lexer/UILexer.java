@@ -32,14 +32,61 @@ public class UILexer extends LexerBase {
     public static final UITokenType WHITE_SPACE = new UITokenType("WHITE_SPACE");
     public static final UITokenType BAD_CHARACTER = new UITokenType("BAD_CHARACTER");
 
-    // Known Components
-    private static final String[] COMPONENTS = {"Group", "Label", "Button", "Input", "Panel", "Container"};
+    // Known Components - erweitert basierend auf den UI-Dateien
+    private static final String[] COMPONENTS = {
+        // Standard UI Components
+        "Group", "Label", "Button", "Input", "Panel", "Container",
 
-    // Known Properties
+        // Item/Inventory Components
+        "ItemIcon", "ItemSlot", "ItemSlotButton", "ItemGrid",
+
+        // Interactive Components
+        "TextButton", "Slider", "FloatSlider", "CheckBox", "DropdownBox",
+        "TextField", "NumberField",
+
+        // Specialized Components (können vom Entwickler definiert sein)
+        "DecoratedContainer", "PageOverlay"
+    };
+
+    // Known Properties - stark erweitert basierend auf den UI-Dateien
     private static final String[] PROPERTIES = {
-        "Anchor", "Width", "Height", "Background", "LayoutMode", "Padding",
-        "Text", "Style", "FontSize", "TextColor", "Alignment", "Full",
-        "Top", "Bottom", "Left", "Right", "Center"
+        // Layout & Positioning
+        "Anchor", "LayoutMode", "Padding", "FlexWeight",
+
+        // Size Properties
+        "Width", "Height", "Full",
+
+        // Directional Anchor Properties
+        "Top", "Bottom", "Left", "Right",
+        "Horizontal", "Vertical",
+
+        // Alignment
+        "Alignment", "HorizontalAlignment", "VerticalAlignment",
+        "Center", "Start", "End",
+
+        // Visual Properties
+        "Background", "Border", "Color", "TexturePath",
+        "Visible", "HitTestVisible",
+
+        // Text & Font Properties
+        "Text", "TextColor", "FontSize",
+        "RenderBold", "RenderUppercase", "Wrap",
+        "PlaceholderText", "MaxLength",
+
+        // Style Properties
+        "Style", "Default", "Hovered", "Pressed", "Disabled",
+        "LabelStyle", "ScrollbarStyle", "Sounds",
+
+        // Item Slot Specific
+        "ShowQualityBackground", "ShowQuantity",
+        "SlotSize", "SlotIconSize", "SlotSpacing", "SlotBackground",
+        "SlotsPerRow",
+
+        // Slider Properties
+        "Min", "Max", "Step", "Value",
+
+        // Number Field Properties
+        "Format", "MaxDecimalPlaces", "MinValue", "MaxValue"
     };
 
     @Override
@@ -93,14 +140,14 @@ public class UILexer extends LexerBase {
         }
 
         // Comments (// style)
-//        if (c == '/' && currentOffset + 1 < endOffset && buffer.charAt(currentOffset + 1) == '/') {
-//            currentTokenType = COMMENT;
-//            while (currentOffset < endOffset && buffer.charAt(currentOffset) != '\n') {
-//                currentOffset++;
-//            }
-//            currentTokenEnd = currentOffset;
-//            return;
-//        }
+        if (c == '/' && currentOffset + 1 < endOffset && buffer.charAt(currentOffset + 1) == '/') {
+            currentTokenType = COMMENT;
+            while (currentOffset < endOffset && buffer.charAt(currentOffset) != '\n') {
+                currentOffset++;
+            }
+            currentTokenEnd = currentOffset;
+            return;
+        }
 
         // Strings
         if (c == '"') {
@@ -135,7 +182,7 @@ public class UILexer extends LexerBase {
             return;
         }
 
-        // Zahlen
+        // Numbers (including negative numbers and decimals)
         if (Character.isDigit(c) || (c == '-' && currentOffset + 1 < endOffset && Character.isDigit(
             buffer.charAt(currentOffset + 1)))) {
             currentTokenType = NUMBER;

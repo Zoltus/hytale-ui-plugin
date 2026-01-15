@@ -1,5 +1,7 @@
 # UI File Plugin for IntelliJ IDEA
 
+> A lightweight IntelliJ IDEA plugin that adds syntax highlighting, bracket matching, and code formatting support for `.ui` files - making UI definition editing easier and more productive.
+
 An IntelliJ IDEA plugin that provides support for `.ui` files - a format for defining user interfaces.
 
 ## Features
