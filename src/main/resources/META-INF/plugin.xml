@@ -15,12 +15,24 @@
       <li>Syntax highlighting for UI components (Group, Label, Button, TextInput)</li>
       <li>Recognition and highlighting of properties (Anchor, Background, Text, Style, etc.)</li>
       <li>Color preview for hex color values with inline color squares</li>
+      <li>IntelliSense/Code completion for UI component types and their properties</li>
+      <li>Property suggestions with descriptions and expected value types</li>
       <li>Brace matching for {} and () blocks</li>
       <li>Code folding for nested {} blocks</li>
       <li>File type registration for .ui extension</li>
     </ul>
     ]]></description>
   <change-notes><![CDATA[
+    <h3>Version 1.1.0</h3>
+    <ul>
+      <li><b>NEW: IntelliSense/Code Completion</b> - Comprehensive auto-completion support for UI files</li>
+      <li>Component type suggestions (Group, Label, Button, TextField, Image, CheckBox, Slider, Panel, ScrollView)</li>
+      <li>Context-aware property suggestions based on current component type</li>
+      <li>Property descriptions and type information in completion popup</li>
+      <li>Smart value templates for different property types (colors, strings, numbers, etc.)</li>
+      <li>Automatic cursor positioning after insertion</li>
+      <li>Extended property definitions for all UI component types</li>
+    </ul>
     <h3>Version 1.0.3</h3>
     <ul>
       <li>Version update to 1.0.3</li>
@@ -82,5 +94,9 @@
     <lang.foldingBuilder
       language="UI"
       implementationClass="de.bungee.uifile.UIFoldingBuilder"/>
+    <!-- Code Completion -->
+    <completion.contributor
+      language="UI"
+      implementationClass="de.bungee.uifile.completion.UICompletionContributor"/>
   </extensions>
 </idea-plugin>
