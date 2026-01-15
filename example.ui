@@ -1,0 +1,42 @@
+// UI File Example
+// This demonstrates the basic syntax supported by the UI File Plugin
+
+Group {
+  Anchor: (Width: 400, Height: 250);
+  Background: #1a1a2e;
+  LayoutMode: Top;
+  Padding: (Full: 20);
+
+  Label #Title {
+    Text: "Hello World!";
+    Anchor: (Height: 40);
+    Style: (FontSize: 24, TextColor: #ffffff, Alignment: Center);
+  }
+
+  Button #SubmitButton {
+    Text: "Click Me";
+    Anchor: (Width: 150, Height: 35);
+    Background: #0066cc;
+    Style: (TextColor: #ffffff, FontSize: 14);
+  }
+
+  // Nested components
+  Group #InputGroup {
+    Anchor: (Height: 80);
+    LayoutMode: Vertical;
+    Padding: (Top: 10, Bottom: 10);
+
+    Label {
+      Text: "Enter your name:";
+      Style: (FontSize: 14, TextColor: #cccccc);
+    }
+
+    TextInput #NameInput {
+      Anchor: (Height: 30);
+      Background: #2d2d44;
+      Placeholder: "Your name here...";
+      Style: (TextColor: #ffffff, FontSize: 12);
+    }
+  }
+}
+

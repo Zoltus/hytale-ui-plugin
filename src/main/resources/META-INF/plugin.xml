@@ -1,0 +1,54 @@
+<idea-plugin>
+  <id>de.bungee.idea.plugins.uifile</id>
+  <name>UI File Support</name>
+  <vendor email="dev@bungee.de"
+    url="https://github.com/BungeeDEV/hytale-ui-plugin">BungeeDEV
+  </vendor>
+
+  <description><![CDATA[
+    Support for .ui files with syntax highlighting for UI definitions.
+
+    Features:
+    - Syntax highlighting for UI components (Group, Label, etc.)
+    - Recognition of properties (Anchor, Background, Text, etc.)
+    - Color preview for hex values
+    - Structured file recognition
+    ]]></description>
+
+  <!-- Requires IntelliJ Platform -->
+  <depends>com.intellij.modules.platform</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- File Type Registration -->
+    <fileType
+      name="UI File"
+      implementationClass="de.bungee.uifile.UIFileType"
+      fieldName="INSTANCE"
+      language="UI"
+      extensions="ui"/>
+
+    <!-- Language Definition -->
+    <lang.parserDefinition
+      language="UI"
+      implementationClass="de.bungee.uifile.parser.UIParserDefinition"/>
+
+    <!-- Syntax Highlighter -->
+    <lang.syntaxHighlighterFactory
+      language="UI"
+      implementationClass="de.bungee.uifile.highlighter.UISyntaxHighlighterFactory"/>
+
+    <!-- Color Settings Page -->
+    <colorSettingsPage
+      implementation="de.bungee.uifile.highlighter.UIColorSettingsPage"/>
+
+    <!-- Commenter -->
+    <lang.commenter
+      language="UI"
+      implementationClass="de.bungee.uifile.UICommenter"/>
+
+    <!-- Brace Matcher -->
+    <lang.braceMatcher
+      language="UI"
+      implementationClass="de.bungee.uifile.UIBraceMatcher"/>
+  </extensions>
+</idea-plugin>
