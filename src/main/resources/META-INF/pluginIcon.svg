@@ -1,0 +1,52 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="40"
+  height="40" viewBox="0 0 40 40">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2b2f3a"/>
+      <stop offset="100%" stop-color="#14161c"/>
+    </linearGradient>
+    <linearGradient id="iconGrad" x1="0" y1="0" x2="1"
+      y2="1">
+      <stop offset="0%" stop-color="#6fd3ff"/>
+      <stop offset="100%" stop-color="#2f7cff"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect x="1" y="1" width="38" height="38" rx="6"
+    fill="url(#bgGrad)"
+    stroke="#5a5f73"
+    stroke-width="1"/>
+
+  <!-- Inner frame -->
+  <rect x="3" y="3" width="34" height="34" rx="4"
+    fill="none"
+    stroke="#1f2330"
+    stroke-width="1"/>
+
+  <!-- Brackets icon (clean & compact) -->
+  <path
+    d="M16 9 C13.5 11 13.5 13 13.5 18 C13.5 23 13.5 25 16 27"
+    fill="none"
+    stroke="url(#iconGrad)"
+    stroke-width="2.2"
+    stroke-linecap="round"/>
+
+  <path
+    d="M24 9 C26.5 11 26.5 13 26.5 18 C26.5 23 26.5 25 24 27"
+    fill="none"
+    stroke="url(#iconGrad)"
+    stroke-width="2.2"
+    stroke-linecap="round"/>
+
+  <!-- .ui label -->
+  <text x="20" y="35"
+    text-anchor="middle"
+    font-size="8.5"
+    font-weight="700"
+    font-family="Segoe UI, Arial, sans-serif"
+    fill="#d8efff"
+    letter-spacing="0.4">
+    .ui
+  </text>
+</svg>

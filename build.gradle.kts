@@ -1,33 +1,27 @@
-plugins {
+﻿plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.9.22"
     id("org.jetbrains.intellij.platform") version "2.10.5"
 }
-
 group = "de.bungee.idea.plugins.uifile"
-version = "1.0.1"
-
-// Configure Java compatibility for JDK 25
+version = "1.0.2"
+// Configure Java compatibility for JDK 17 (required by IntelliJ Platform 2025.1+)
 java {
-    sourceCompatibility = JavaVersion.VERSION_25
-    targetCompatibility = JavaVersion.VERSION_25
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(25))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
-
 kotlin {
-    jvmToolchain(25)
+    jvmToolchain(17)
 }
-
 repositories {
     mavenCentral()
-
     intellijPlatform {
         defaultRepositories()
     }
 }
-
 // Exclude Kotlin stdlib to avoid conflicts with IntelliJ Platform's bundled version
 configurations.all {
     exclude(
@@ -47,42 +41,34 @@ configurations.all {
         module = "kotlin-stdlib-jdk7"
     )
 }
-
 dependencies {
     intellijPlatform {
         intellijIdeaUltimate("2025.1")
         bundledPlugins(listOf(/* Plugin Dependencies */))
     }
-
     testImplementation("junit:junit:4.13.2")
 }
-
 // Configure Gradle IntelliJ Platform Plugin
 intellijPlatform {
     buildSearchableOptions = false
-
     pluginConfiguration {
-        version = "1.0.1"
-
+        version = "1.0.2"
         ideaVersion {
             sinceBuild = "251"
             untilBuild = "253.*"
         }
     }
-
     pluginVerification {
         ides {
             recommended()
         }
     }
-
     signing {
         certificateChain =
             System.getenv("CERTIFICATE_CHAIN")
         privateKey = System.getenv("PRIVATE_KEY")
         password = System.getenv("PRIVATE_KEY_PASSWORD")
     }
-
     publishing {
         token = System.getenv("PUBLISH_TOKEN")
     }

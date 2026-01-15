@@ -1,23 +1,46 @@
-<idea-plugin>
+﻿<idea-plugin>
   <id>de.bungee.idea.plugins.uifile</id>
-  <name>UI File Support</name>
-  <vendor email="dev@bungee.de"
-    url="https://github.com/BungeeDEV/hytale-ui-plugin">BungeeDEV
+  <name>Hytale .ui Support</name>
+  <vendor email="contact@lyndara.net"
+    url="https://github.com/BungeeDEV/hytale-ui-plugin">
+    BungeeDEV
   </vendor>
-
   <description><![CDATA[
-    Support for .ui files with syntax highlighting for UI definitions.
-
-    Features:
-    - Syntax highlighting for UI components (Group, Label, etc.)
-    - Recognition of properties (Anchor, Background, Text, etc.)
-    - Color preview for hex values
-    - Structured file recognition
+    Syntax highlighting and IDE support for .ui files used in UI definitions.
+    <br/><br/>
+    This plugin provides comprehensive support for .ui files, making it easier to work with UI component definitions in your IDE.
+    <br/><br/>
+    <b>Features:</b>
+    <ul>
+      <li>Syntax highlighting for UI components (Group, Label, Button, TextInput)</li>
+      <li>Recognition and highlighting of properties (Anchor, Background, Text, Style, etc.)</li>
+      <li>Color preview for hex color values with inline color squares</li>
+      <li>Brace matching for {} and () blocks</li>
+      <li>Code folding for nested {} blocks</li>
+      <li>File type registration for .ui extension</li>
+    </ul>
     ]]></description>
-
+  <change-notes><![CDATA[
+    <h3>Version 1.0.2</h3>
+    <ul>
+      <li>Added color preview gutter icons for hex color values (#RGB, #RRGGBB, #RRGGBBAA)</li>
+      <li>Hover over color icons to see RGB/RGBA values</li>
+    </ul>
+    <h3>Version 1.0.1</h3>
+    <ul>
+      <li>Extended IDE compatibility: Now supports IntelliJ IDEA builds 251 through 253.*</li>
+      <li>Enhanced JDK compatibility: Plugin builds correctly with JDK 17, 21, and 25</li>
+      <li>Fixed compatibility issue with IntelliJ IDEA 2025.3 (build 253.*)</li>
+    </ul>
+    <h3>Version 1.0.0</h3>
+    <ul>
+      <li>Initial release with syntax highlighting for .ui files</li>
+      <li>Support for UI components and properties</li>
+      <li>Bracket matching and code folding</li>
+    </ul>
+    ]]></change-notes>
   <!-- Requires IntelliJ Platform -->
   <depends>com.intellij.modules.platform</depends>
-
   <extensions defaultExtensionNs="com.intellij">
     <!-- File Type Registration -->
     <fileType
@@ -26,29 +49,32 @@
       fieldName="INSTANCE"
       language="UI"
       extensions="ui"/>
-
     <!-- Language Definition -->
     <lang.parserDefinition
       language="UI"
       implementationClass="de.bungee.uifile.parser.UIParserDefinition"/>
-
     <!-- Syntax Highlighter -->
     <lang.syntaxHighlighterFactory
       language="UI"
       implementationClass="de.bungee.uifile.highlighter.UISyntaxHighlighterFactory"/>
-
     <!-- Color Settings Page -->
     <colorSettingsPage
       implementation="de.bungee.uifile.highlighter.UIColorSettingsPage"/>
-
+    <!-- Color Preview Annotator -->
+    <annotator
+      language="UI"
+      implementationClass="de.bungee.uifile.highlighter.UIColorAnnotator"/>
     <!-- Commenter -->
     <lang.commenter
       language="UI"
       implementationClass="de.bungee.uifile.UICommenter"/>
-
     <!-- Brace Matcher -->
     <lang.braceMatcher
       language="UI"
       implementationClass="de.bungee.uifile.UIBraceMatcher"/>
+    <!-- Code Folding -->
+    <lang.foldingBuilder
+      language="UI"
+      implementationClass="de.bungee.uifile.UIFoldingBuilder"/>
   </extensions>
 </idea-plugin>
