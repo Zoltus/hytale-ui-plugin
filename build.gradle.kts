@@ -5,7 +5,20 @@ plugins {
 }
 
 group = "de.bungee.idea.plugins.uifile"
-version = "1.0.0"
+version = "1.0.1"
+
+// Configure Java compatibility for JDK 25
+java {
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(25))
+    }
+}
+
+kotlin {
+    jvmToolchain(25)
+}
 
 repositories {
     mavenCentral()
@@ -49,11 +62,11 @@ intellijPlatform {
     buildSearchableOptions = false
 
     pluginConfiguration {
-        version = "1.0.0"
+        version = "1.0.1"
 
         ideaVersion {
             sinceBuild = "251"
-            untilBuild = "251.*"
+            untilBuild = "253.*"
         }
     }
 

@@ -11,8 +11,8 @@ An IntelliJ IDEA plugin that provides support for `.ui` files - a format for def
 
 ## Requirements
 
-- **IntelliJ IDEA 2025.1** or newer
-- **JDK 17 or higher** (for development)
+- **IntelliJ IDEA 2025.1 - 2025.3** (Build 251.* - 253.*)
+- **JDK 17, 21, or 25** (for development and building)
 
 ## Installation
 
@@ -30,9 +30,9 @@ cd hytale-ui-plugin
 
 ### 3. Install the Plugin
 
-- Find the built plugin at: `build/distributions/ui-file-plugin-1.0.0.zip`
+- Find the built plugin at: `build/distributions/ui-file-plugin-1.0.1.zip`
 - In IntelliJ: `File → Settings → Plugins → ⚙️ → Install Plugin from Disk...`
-- Select the `.jar` file and restart the IDE
+- Select the `.zip` or `.jar` file and restart the IDE
 
 ### Alternative: Test the Plugin Directly
 
