@@ -21,6 +21,12 @@
     </ul>
     ]]></description>
   <change-notes><![CDATA[
+    <h3>Version 1.0.3</h3>
+    <ul>
+      <li>Version update to 1.0.3</li>
+      <li>Minor bug fixes and performance improvements</li>
+      <li>Added build script for Github Releases</li>
+    </ul>
     <h3>Version 1.0.2</h3>
     <ul>
       <li>Added color preview gutter icons for hex color values (#RGB, #RRGGBB, #RRGGBBAA)</li>
