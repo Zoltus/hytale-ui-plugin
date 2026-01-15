@@ -6,7 +6,6 @@ An IntelliJ IDEA plugin that provides support for `.ui` files - a format for def
 
 ✅ **Syntax Highlighting** - Color highlighting for components, properties, strings, and comments  
 ✅ **Bracket Matching** - Automatic matching of `{}` and `()`  
-✅ **Comment Toggle** - Quick commenting with `Ctrl+/` (Windows/Linux) or `Cmd+/` (Mac)
 
 ## Requirements
 
@@ -19,26 +18,19 @@ An IntelliJ IDEA plugin that provides support for `.ui` files - a format for def
 
 ```bash
 git clone https://github.com/BungeeDEV/hytale-ui-plugin.git
-cd ui-plugin
+cd hytale-ui-plugin
 ```
 
 ### 2. Build the Plugin
-
-**Linux/Mac:**
 ```bash
 ./gradlew buildPlugin
-```
-
-**Windows:**
-```bash
-gradlew.bat buildPlugin
 ```
 
 ### 3. Install the Plugin
 
 - Find the built plugin at: `build/distributions/ui-file-plugin-1.0.0.zip`
 - In IntelliJ: `File → Settings → Plugins → ⚙️ → Install Plugin from Disk...`
-- Select the `.zip` file and restart the IDE
+- Select the `.jar` file and restart the IDE
 
 ### Alternative: Test the Plugin Directly
 
