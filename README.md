@@ -7,7 +7,31 @@ An IntelliJ IDEA plugin that provides support for `.ui` files - a format for def
 ## Features
 
 ✅ **Syntax Highlighting** - Color highlighting for components, properties, strings, and comments  
+✅ **IntelliSense/Code Completion** - Auto-completion for UI component types and their properties with descriptions  
+✅ **Color Preview** - Visual color squares in the gutter for hex color values  
 ✅ **Bracket Matching** - Automatic matching of `{}` and `()`  
+✅ **Code Folding** - Collapse and expand nested blocks  
+
+### IntelliSense Features
+
+The plugin provides intelligent code completion that helps you discover and use UI components:
+
+- **Component Type Completion**: Start typing and get suggestions for all available UI components (Group, Label, Button, TextField, Image, CheckBox, Slider, Panel, ScrollView)
+- **Property Completion**: Inside a component block, get context-aware property suggestions
+- **Type Information**: See the expected value type for each property (color, string, number, boolean, etc.)
+- **Descriptions**: Each property shows a helpful description of what it does
+- **Smart Templates**: Properties are inserted with appropriate default values and syntax
+
+**Supported UI Components:**
+- `Group` - Container with layout capabilities
+- `Label` - Text display
+- `Button` - Clickable button with hover/pressed states
+- `TextField`/`TextInput` - Text input fields with placeholder support
+- `Image` - Image display with stretch modes
+- `CheckBox` - Checkbox with label
+- `Slider` - Value slider with min/max range
+- `Panel` - Generic panel with border options
+- `ScrollView` - Scrollable container  
 
 ## Requirements
 
