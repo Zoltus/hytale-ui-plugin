@@ -8,6 +8,24 @@ on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2026-01-19
+
+### Added
+
+- **Code Reformatting Support**: Comprehensive support for the "Reformat Code" action (Ctrl+Alt+L / Cmd+Option+L) in `.ui` files.
+    - Smart spacing rules for components, properties, and values.
+    - Configurable indentation (default 2 spaces).
+    - Idempotent formatting (multiple applications produce consistent results).
+- **Hierarchical AST Parsing**: Re-implemented the parser to create a proper hierarchical tree structure for components and nested blocks.
+    - Improves code folding accuracy.
+    - Enables correct relative indentation for nested elements.
+
+### Fixed
+
+- **Indentation Issues**: Resolved several bugs related to incorrect or excessive indentation.
+    - Fixed "staircase" effect in nested components.
+    - Fixed double-spacing issues during reformatting.
+
 ## [1.2.0] - 2026-01-18
 
 ### Added
@@ -115,6 +133,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - **Color Highlighting**: Automatic preview for hex colors (
   #RRGGBB format)
 - **IDE Integration**: Works with IntelliJ IDEA 2025.1+
+
+[1.2.1]: https://github.com/BungeeDEV/hytale-ui-plugin/releases/tag/v1.2.1
 
 [1.2.0]: https://github.com/BungeeDEV/hytale-ui-plugin/releases/tag/v1.2.0
 
