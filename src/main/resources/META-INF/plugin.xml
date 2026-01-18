@@ -15,14 +15,21 @@
       <li>Syntax highlighting for UI components (Group, Label, Button, TextInput)</li>
       <li>Recognition and highlighting of properties (Anchor, Background, Text, Style, etc.)</li>
       <li>Color preview for hex color values with inline color squares</li>
-      <li>IntelliSense/Code completion for UI component types and their properties</li>
-      <li>Property suggestions with descriptions and expected value types</li>
       <li>Brace matching for {} and () blocks</li>
       <li>Code folding for nested {} blocks</li>
       <li>File type registration for .ui extension</li>
     </ul>
     ]]></description>
   <change-notes><![CDATA[
+    <h3>Version 1.2.0</h3>
+    <ul>
+      <li>Added Live Preview Tool Window for visual rendering of .ui files</li>
+      <li>Real-time preview updates while typing in the editor</li>
+      <li>Professional UI component rendering (Group, Label, Button, TextField)</li>
+      <li>Zoom controls (+, -, Reset to 100%)</li>
+      <li>Accurate color and size rendering from .ui syntax</li>
+      <li>Preview panel positioned on the right side of the IDE</li>
+    </ul>
     <h3>Version 1.1.0</h3>
     <ul>
       <li><b>NEW: IntelliSense/Code Completion</b> - Comprehensive auto-completion support for UI files</li>
@@ -94,18 +101,13 @@
     <lang.foldingBuilder
       language="UI"
       implementationClass="de.bungee.uifile.UIFoldingBuilder"/>
-    <!-- Code Completion -->
-    <completion.contributor
-      language="UI"
-      implementationClass="de.bungee.uifile.completion.UICompletionContributor"/>
+    <!-- Preview Tool Window -->
+    <toolWindow
+      id="UI Preview"
+      anchor="right"
+      icon="AllIcons.Actions.Preview"
+      factoryClass="de.bungee.uifile.preview.UIPreviewToolWindowFactory"/>
+
   </extensions>
-  <actions>
-    <action id="de.bungee.uifile.action.uiFileAction"
-            class="de.bungee.uifile.action.UIFileAction"
-            text="UI File"
-            description="Create a new .ui file"
-            icon="/icons/uiFile.svg">
-      <add-to-group group-id="NewGroup" anchor="last"/>
-    </action>
-  </actions>
+
 </idea-plugin>
