@@ -4,7 +4,6 @@ import com.intellij.ui.JBColor;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.font.TextAttribute;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,7 +43,6 @@ public class UIComponentRenderer extends JPanel {
 
         String mode = parent.getLayoutMode();
 
-        // 1. Berechne festen Platzbedarf und Flex-Summe
         float totalFlex = 0;
         int fixedSize = 0;
         for (UIModel.Component child : parent.getChildren()) {
@@ -54,25 +52,21 @@ public class UIComponentRenderer extends JPanel {
             }
         }
 
-        // 2. Verteile restlichen Platz
         int availableSpace = (mode.equals("Left") || mode.equals("Right")) ? innerW : innerH;
         int remainingSpace = Math.max(0, availableSpace - fixedSize);
 
         int currentPos = (mode.equals("Left") || mode.equals("Top")) ? 0 : remainingSpace;
 
         for (UIModel.Component child : parent.getChildren()) {
-            int childW = innerW;
-            int childH = innerH;
             int size = (child.flexWeight > 0) ? (int) (remainingSpace * (child.flexWeight / totalFlex))
                 : (mode.equals("Left") || mode.equals("Right") ? child.prefWidth : child.prefHeight);
 
             if (mode.equals("Left") || mode.equals("Right")) {
                 child.setBounds(innerX + currentPos, innerY, size, innerH);
-                currentPos += size;
             } else {
                 child.setBounds(innerX, innerY + currentPos, innerW, size);
-                currentPos += size;
             }
+            currentPos += size;
 
             if (child instanceof UIModel.GroupComponent) {
                 layoutGroup((UIModel.GroupComponent) child, child.x, child.y, child.width, child.height);
@@ -119,7 +113,7 @@ public class UIComponentRenderer extends JPanel {
     private void drawButton(Graphics2D g, UIModel.ButtonComponent b) {
         g.setColor(new JBColor(new Color(43, 53, 66), new Color(43, 53, 66)));
         g.fillRoundRect(b.x, b.y, b.width, b.height, 4, 4);
-        g.setColor(Color.WHITE);
+        g.setColor(JBColor.WHITE);
         Font f = g.getFont();
         g.setFont(f.deriveFont(Font.BOLD, 12f));
         FontMetrics fm = g.getFontMetrics();
@@ -127,7 +121,6 @@ public class UIComponentRenderer extends JPanel {
             b.y + (b.height + fm.getAscent()) / 2 - 2);
     }
 
-    // Zoom-Methoden
     public void zoomIn() {
         scale *= 1.1;
         repaint();

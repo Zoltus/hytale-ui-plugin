@@ -22,7 +22,6 @@ public class UIPreviewPanel extends JPanel {
     private static final Logger LOG = Logger.getInstance(UIPreviewPanel.class);
     private static final int SCROLL_UNIT_INCREMENT = 16;
 
-    // Hintergrundfarbe für den Preview-Bereich (neutral dunkel)
     private static final JBColor PREVIEW_BG = new JBColor(Gray._24, Gray._24);
 
     private final UIComponentRenderer renderer;
@@ -33,13 +32,11 @@ public class UIPreviewPanel extends JPanel {
         super(new BorderLayout());
         this.renderer = new UIComponentRenderer();
 
-        // ScrollPane Setup
         JBScrollPane scrollPane = new JBScrollPane(renderer);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.getVerticalScrollBar().setUnitIncrement(SCROLL_UNIT_INCREMENT);
         scrollPane.getHorizontalScrollBar().setUnitIncrement(SCROLL_UNIT_INCREMENT);
 
-        // Hintergrundfarbe des Viewports setzen, damit es beim Scrollen nicht flackert
         scrollPane.getViewport().setBackground(PREVIEW_BG);
 
         add(scrollPane, BorderLayout.CENTER);
@@ -49,7 +46,6 @@ public class UIPreviewPanel extends JPanel {
     }
 
     private JPanel createToolbar() {
-        // IntelliJ-Style Toolbar
         JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 4));
         toolbar.setBackground(JBColor.background());
         toolbar.setBorder(JBUI.Borders.customLine(JBColor.border(), 0, 0, 1, 0));
@@ -70,18 +66,18 @@ public class UIPreviewPanel extends JPanel {
         button.setToolTipText(tooltip);
         button.setFocusable(false);
         button.addActionListener(listener);
-        // Etwas flacheres Design für die IDE Integration
         button.putClientProperty("JButton.buttonType", "square");
         return button;
     }
 
     public void updatePreview(@Nullable VirtualFile file) {
-        if (file == null) return;
+        if (file == null) {
+            return;
+        }
 
         removeCurrentDocumentListener();
 
         try {
-            // Immer den aktuellsten Content aus dem Dokument holen, falls vorhanden
             Document document = FileDocumentManager.getInstance().getDocument(file);
             String content;
             if (document != null) {
@@ -111,8 +107,6 @@ public class UIPreviewPanel extends JPanel {
             documentListener = new DocumentListener() {
                 @Override
                 public void documentChanged(@NotNull DocumentEvent event) {
-                    // Benutze den Parser im Hintergrund-Thread, falls UI komplex wird
-                    // Hier direkt für sofortiges Feedback:
                     ApplicationManager.getApplication().invokeLater(() ->
                         renderContent(document.getText())
                     );
@@ -123,11 +117,9 @@ public class UIPreviewPanel extends JPanel {
     }
 
     private void renderContent(@NotNull String content) {
-        // Hier wird die neue Parser-Logik aufgerufen
         UIModel model = UIModelParser.parse(content);
         renderer.setModel(model);
 
-        // Wichtig für ScrollPane: Größe muss neu berechnet werden, wenn sich Content ändert
         renderer.revalidate();
         renderer.repaint();
     }
