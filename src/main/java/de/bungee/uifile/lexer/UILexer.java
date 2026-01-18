@@ -28,6 +28,10 @@ public class UILexer extends LexerBase {
     public static final UITokenType SEMICOLON = new UITokenType("SEMICOLON");
     public static final UITokenType COMMA = new UITokenType("COMMA");
     public static final UITokenType HASH = new UITokenType("HASH");
+    public static final UITokenType AT = new UITokenType("AT");
+    public static final UITokenType EQUALS = new UITokenType("EQUALS");
+    public static final UITokenType DOLLAR = new UITokenType("DOLLAR");
+    public static final UITokenType DOT = new UITokenType("DOT");
     public static final UITokenType COMMENT = new UITokenType("COMMENT");
     public static final UITokenType WHITE_SPACE = new UITokenType("WHITE_SPACE");
     public static final UITokenType BAD_CHARACTER = new UITokenType("BAD_CHARACTER");
@@ -231,6 +235,26 @@ public class UILexer extends LexerBase {
                 return;
             case ',':
                 currentTokenType = COMMA;
+                currentOffset++;
+                currentTokenEnd = currentOffset;
+                return;
+            case '@':
+                currentTokenType = AT;
+                currentOffset++;
+                currentTokenEnd = currentOffset;
+                return;
+            case '=':
+                currentTokenType = EQUALS;
+                currentOffset++;
+                currentTokenEnd = currentOffset;
+                return;
+            case '$':
+                currentTokenType = DOLLAR;
+                currentOffset++;
+                currentTokenEnd = currentOffset;
+                return;
+            case '.':
+                currentTokenType = DOT;
                 currentOffset++;
                 currentTokenEnd = currentOffset;
                 return;

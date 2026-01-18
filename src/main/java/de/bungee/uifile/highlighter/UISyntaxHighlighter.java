@@ -53,6 +53,18 @@ public class UISyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey COMMA =
         createTextAttributesKey("UI_COMMA", DefaultLanguageHighlighterColors.COMMA);
 
+    public static final TextAttributesKey AT =
+        createTextAttributesKey("UI_AT", DefaultLanguageHighlighterColors.OPERATION_SIGN);
+
+    public static final TextAttributesKey EQUALS =
+        createTextAttributesKey("UI_EQUALS", DefaultLanguageHighlighterColors.OPERATION_SIGN);
+
+    public static final TextAttributesKey DOLLAR =
+        createTextAttributesKey("UI_DOLLAR", DefaultLanguageHighlighterColors.KEYWORD);
+
+    public static final TextAttributesKey DOT =
+        createTextAttributesKey("UI_DOT", DefaultLanguageHighlighterColors.DOT);
+
     public static final TextAttributesKey BAD_CHARACTER =
         createTextAttributesKey("UI_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
 
@@ -69,6 +81,10 @@ public class UISyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] COLON_KEYS = new TextAttributesKey[]{COLON};
     private static final TextAttributesKey[] SEMICOLON_KEYS = new TextAttributesKey[]{SEMICOLON};
     private static final TextAttributesKey[] COMMA_KEYS = new TextAttributesKey[]{COMMA};
+    private static final TextAttributesKey[] AT_KEYS = new TextAttributesKey[]{AT};
+    private static final TextAttributesKey[] EQUALS_KEYS = new TextAttributesKey[]{EQUALS};
+    private static final TextAttributesKey[] DOLLAR_KEYS = new TextAttributesKey[]{DOLLAR};
+    private static final TextAttributesKey[] DOT_KEYS = new TextAttributesKey[]{DOT};
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
@@ -105,6 +121,14 @@ public class UISyntaxHighlighter extends SyntaxHighlighterBase {
             return SEMICOLON_KEYS;
         } else if (tokenType.equals(UILexer.COMMA)) {
             return COMMA_KEYS;
+        } else if (tokenType.equals(UILexer.AT)) {
+            return AT_KEYS;
+        } else if (tokenType.equals(UILexer.EQUALS)) {
+            return EQUALS_KEYS;
+        } else if (tokenType.equals(UILexer.DOLLAR)) {
+            return DOLLAR_KEYS;
+        } else if (tokenType.equals(UILexer.DOT)) {
+            return DOT_KEYS;
         } else if (tokenType.equals(UILexer.BAD_CHARACTER)) {
             return BAD_CHAR_KEYS;
         } else {
