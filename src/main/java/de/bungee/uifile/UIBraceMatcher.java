@@ -10,8 +10,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class UIBraceMatcher implements PairedBraceMatcher {
     private static final BracePair[] PAIRS = new BracePair[]{
-            new BracePair(UILexer.LBRACE, UILexer.RBRACE, true),
-            new BracePair(UILexer.LPAREN, UILexer.RPAREN, false),
+        new BracePair(UILexer.LBRACE, UILexer.RBRACE, true),
+        new BracePair(UILexer.LPAREN, UILexer.RPAREN, false),
     };
 
     @Override
@@ -20,7 +20,8 @@ public class UIBraceMatcher implements PairedBraceMatcher {
     }
 
     @Override
-    public boolean isPairedBracesAllowedBeforeType(@NotNull IElementType lbraceType, @Nullable IElementType contextType) {
+    public boolean isPairedBracesAllowedBeforeType(@NotNull IElementType lbraceType,
+        @Nullable IElementType contextType) {
         return true;
     }
 

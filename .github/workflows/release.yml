@@ -60,38 +60,33 @@ jobs:
           rm -rf ~/.gradle/wrapper/dists/
           df -h
 
-      - name: Extract Version from Tag
-        id: version
-        run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-
-      - name: Extract Release Notes
-        id: release_notes
+      - name: Get Previous Tag
+        id: previoustag
         run: |
-          VERSION="${{ steps.version.outputs.version }}"
-          # Extrahiere den Changelog-Abschnitt für diese Version
-          NOTES=$(awk "/## \[$VERSION\]/,/## \[/" CHANGELOG.md | sed '$d' | tail -n +2)
-          
-          # Fallback auf automatisch generierte Notes, wenn keine gefunden
-          if [ -z "$NOTES" ]; then
-            echo "Keine spezifischen Release Notes in CHANGELOG.md gefunden für Version $VERSION"
-            echo "use_auto_notes=true" >> $GITHUB_OUTPUT
-          else
-            # Escape für GitHub Actions Output
-            echo "notes<<EOF" >> $GITHUB_OUTPUT
-            echo "$NOTES" >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
-            echo "use_auto_notes=false" >> $GITHUB_OUTPUT
-          fi
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+          echo "Previous tag: $PREVIOUS_TAG"
+
+      - name: Build Changelog
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@v5
+        with:
+          mode: "COMMIT"
+          configuration: ".github/changelog-config.json"
+          fromTag: ${{ steps.previoustag.outputs.previous_tag }}
+          toTag: ${{ github.ref_name }}
+          commitMode: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           files: build/distributions/*.zip
-          body: ${{ steps.release_notes.outputs.notes }}
-          generate_release_notes: ${{ steps.release_notes.outputs.use_auto_notes }}
+          body: ${{ steps.build_changelog.outputs.changelog }}
+          generate_release_notes: false
           draft: false
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') || contains(github.ref, 'rc') }}
           fail_on_unmatched_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
