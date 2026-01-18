@@ -13,6 +13,7 @@ public class UIComponentRenderer extends JPanel {
 
     public void setModel(UIModel model) {
         this.model = model;
+        updatePreferredSize();
     }
 
     @Override
@@ -123,16 +124,38 @@ public class UIComponentRenderer extends JPanel {
 
     public void zoomIn() {
         scale *= 1.1;
+        updatePreferredSize();
+        revalidate();
         repaint();
     }
 
     public void zoomOut() {
         scale /= 1.1;
+        updatePreferredSize();
+        revalidate();
         repaint();
     }
 
     public void resetZoom() {
         scale = 1.0;
+        updatePreferredSize();
+        revalidate();
         repaint();
+    }
+
+    public int getZoomPercent() {
+        return (int) Math.round(scale * 100);
+    }
+
+    private void updatePreferredSize() {
+        if (model != null) {
+            int maxWidth = 0;
+            int maxHeight = 0;
+            for (UIModel.GroupComponent group : model.getTopLevelGroups()) {
+                maxWidth = Math.max(maxWidth, (int) (group.prefWidth * scale));
+                maxHeight = Math.max(maxHeight, (int) (group.prefHeight * scale));
+            }
+            setPreferredSize(new Dimension(maxWidth, maxHeight));
+        }
     }
 }
