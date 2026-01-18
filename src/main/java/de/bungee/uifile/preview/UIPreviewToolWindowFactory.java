@@ -17,7 +17,7 @@ public class UIPreviewToolWindowFactory implements ToolWindowFactory, DumbAware 
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        UIPreviewPanel previewPanel = new UIPreviewPanel(project);
+        UIPreviewPanel previewPanel = new UIPreviewPanel();
         ContentFactory contentFactory = ContentFactory.getInstance();
         Content content = contentFactory.createContent(previewPanel, "", false);
         toolWindow.getContentManager().addContent(content);
