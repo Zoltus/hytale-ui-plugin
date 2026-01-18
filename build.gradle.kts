@@ -3,8 +3,11 @@
     id("org.jetbrains.kotlin.jvm") version "1.9.22"
     id("org.jetbrains.intellij.platform") version "2.10.5"
 }
+
+val pluginVersion = "1.2.2"
+
 group = "de.bungee.idea.plugins.uifile"
-version = "1.2.1"
+version = pluginVersion
 // Configure Java compatibility for JDK 17 (required by IntelliJ Platform 2025.1+)
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -52,7 +55,7 @@ dependencies {
 intellijPlatform {
     buildSearchableOptions = false
     pluginConfiguration {
-        version = "1.2.1"
+        version = pluginVersion
         ideaVersion {
             sinceBuild = "251"
             untilBuild = "253.*"

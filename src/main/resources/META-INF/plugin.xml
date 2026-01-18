@@ -15,12 +15,26 @@
       <li>Syntax highlighting for UI components (Group, Label, Button, TextInput)</li>
       <li>Recognition and highlighting of properties (Anchor, Background, Text, Style, etc.)</li>
       <li>Color preview for hex color values with inline color squares</li>
+      <li><b>Interactive color picker</b> - Click color gutter icons or use Alt+Enter to change colors visually</li>
       <li>Brace matching for {} and () blocks</li>
       <li>Code folding for nested {} blocks</li>
       <li>File type registration for .ui extension</li>
     </ul>
     ]]></description>
   <change-notes><![CDATA[
+    <h3>Version 1.2.2</h3>
+    <ul>
+      <li><b>NEW: Interactive Color Picker</b> - Click on color gutter icons to open color picker dialog</li>
+      <li>Change colors visually with IntelliJ's native color picker</li>
+      <li>Support for an alpha channel (transparency) in colors</li>
+      <li>Intention action "Choose color" available via Alt+Enter on color values</li>
+      <li>Real-time code updates when selecting new colors</li>
+      <li>Enhanced tooltip showing RGB/RGBA values on hover</li>
+      <li><b>IMPROVED: Preview System</b> - Simplified UI model and renderer structure for better performance</li>
+      <li>Enhanced component layout handling in a preview panel</li>
+      <li>Improved code clarity and maintainability of preview components</li>
+      <li>Better style handling for UI components in live preview</li>
+    </ul>
     <h3>Version 1.2.1</h3>
     <ul>
       <li><b>NEW: Code Reformatting Support</b> - Full support for Ctrl+Alt+L / Cmd+Option+L in .ui files</li>
@@ -105,6 +119,13 @@
     <annotator
       language="UI"
       implementationClass="de.bungee.uifile.highlighter.UIColorAnnotator"/>
+    <!-- Color Picker Intention -->
+    <intentionAction>
+      <className>
+        de.bungee.uifile.highlighter.UIColorChooserIntention
+      </className>
+      <category>UI file</category>
+    </intentionAction>
     <!-- Commenter -->
     <lang.commenter
       language="UI"
