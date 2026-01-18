@@ -1,6 +1,8 @@
 package de.bungee.uifile.highlighter;
 
+import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
+import com.intellij.psi.PsiElement;
 import com.intellij.util.ui.ColorIcon;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,11 +16,13 @@ public class UIColorGutterIconRenderer extends GutterIconRenderer {
     private final Color color;
     private final String colorString;
     private final Icon icon;
+    private final PsiElement element;
 
-    public UIColorGutterIconRenderer(@NotNull Color color, @NotNull String colorString) {
+    public UIColorGutterIconRenderer(@NotNull Color color, @NotNull String colorString, @NotNull PsiElement element) {
         this.color = color;
         this.colorString = colorString;
         this.icon = new ColorIcon(ICON_SIZE, color);
+        this.element = element;
     }
 
     @NotNull
@@ -31,11 +35,28 @@ public class UIColorGutterIconRenderer extends GutterIconRenderer {
     @Override
     public String getTooltipText() {
         if (color.getAlpha() == 255) {
-            return String.format("%s (R:%d, G:%d, B:%d)",
+            return String.format("%s (R:%d, G:%d, B:%d) - Click to change color",
                 colorString, color.getRed(), color.getGreen(), color.getBlue());
         }
-        return String.format("%s (R:%d, G:%d, B:%d, A:%d)",
+        return String.format("%s (R:%d, G:%d, B:%d, A:%d) - Click to change color",
             colorString, color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+    }
+
+    @Nullable
+    @Override
+    public AnAction getClickAction() {
+        return new UIColorPickerAction(element, color);
+    }
+
+    @Override
+    public boolean isNavigateAction() {
+        return true;
+    }
+
+    @NotNull
+    @Override
+    public Alignment getAlignment() {
+        return Alignment.LEFT;
     }
 
     @Override

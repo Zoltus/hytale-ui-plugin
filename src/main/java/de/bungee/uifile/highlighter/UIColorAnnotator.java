@@ -25,7 +25,7 @@ public class UIColorAnnotator implements Annotator {
             TextRange range = element.getTextRange();
             holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
                 .range(range)
-                .gutterIconRenderer(new UIColorGutterIconRenderer(color, colorString))
+                .gutterIconRenderer(new UIColorGutterIconRenderer(color, colorString, element))
                 .create();
         }
     }
