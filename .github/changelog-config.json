@@ -1,0 +1,71 @@
+{
+  "categories": [
+    {
+      "title": "## 🚀 Features",
+      "labels": ["feat", "feature"],
+      "rules": [
+        {
+          "pattern": "^feat(\\(.+\\))?:",
+          "on_property": "subject"
+        },
+        {
+          "pattern": "^feature(\\(.+\\))?:",
+          "on_property": "subject"
+        }
+      ]
+    },
+    {
+      "title": "## 🐛 Fixes",
+      "labels": ["fix", "bug"],
+      "rules": [
+        {
+          "pattern": "^fix(\\(.+\\))?:",
+          "on_property": "subject"
+        },
+        {
+          "pattern": "^bug(\\(.+\\))?:",
+          "on_property": "subject"
+        }
+      ]
+    },
+    {
+      "title": "## 📦 Dependencies",
+      "labels": ["chore", "dependencies"],
+      "rules": [
+        {
+          "pattern": "^chore(\\(.+\\))?:",
+          "on_property": "subject"
+        },
+        {
+          "pattern": "^deps(\\(.+\\))?:",
+          "on_property": "subject"
+        }
+      ]
+    },
+    {
+      "title": "## 📝 Documentation",
+      "labels": ["docs"],
+      "rules": [
+        {
+          "pattern": "^docs(\\(.+\\))?:",
+          "on_property": "subject"
+        }
+      ]
+    },
+    {
+      "title": "## 💬 Other",
+      "labels": []
+    }
+  ],
+  "ignore_labels": ["ignore"],
+  "sort": {
+    "order": "ASC",
+    "on_property": "mergedAt"
+  },
+  "template": "#{{CHANGELOG}}\n\n---\n\n**Full Changelog**: #{{RELEASE_DIFF}}",
+  "pr_template": "- #{{TITLE}} by @#{{AUTHOR}} in ##{{NUMBER}}",
+  "empty_template": "- No changes",
+  "max_pull_requests": 200,
+  "max_back_track_time_days": 365
+}
+
