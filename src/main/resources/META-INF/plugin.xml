@@ -21,6 +21,13 @@
     </ul>
     ]]></description>
   <change-notes><![CDATA[
+    <h3>Version 1.2.1</h3>
+    <ul>
+      <li><b>NEW: Code Reformatting Support</b> - Full support for Ctrl+Alt+L / Cmd+Option+L in .ui files</li>
+      <li>Smart spacing for components, properties, and values</li>
+      <li>Hierarchical AST parsing for improved nesting and indentation</li>
+      <li>Fixed various indentation and spacing bugs during reformat</li>
+    </ul>
     <h3>Version 1.2.0</h3>
     <ul>
       <li><b>NEW: Live Preview Tool Window</b> - Visual rendering of .ui files with real-time updates</li>
@@ -110,6 +117,12 @@
     <lang.foldingBuilder
       language="UI"
       implementationClass="de.bungee.uifile.UIFoldingBuilder"/>
+    <!-- Formatter -->
+    <lang.formatter
+      language="UI"
+      implementationClass="de.bungee.uifile.formatting.UIFormattingModelBuilder"/>
+    <langCodeStyleSettingsProvider
+      implementation="de.bungee.uifile.formatting.UILanguageCodeStyleSettingsProvider"/>
     <!-- Preview Tool Window -->
     <toolWindow
       id="UI Preview"
