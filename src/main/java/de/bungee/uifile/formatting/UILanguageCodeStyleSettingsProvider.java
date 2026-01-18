@@ -8,7 +8,6 @@ import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider;
 import de.bungee.uifile.UILanguage;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class UILanguageCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvider {
     @NotNull
@@ -29,13 +28,14 @@ public class UILanguageCodeStyleSettingsProvider extends LanguageCodeStyleSettin
 
     @Override
     public String getCodeSample(@NotNull SettingsType settingsType) {
-        return "@Panel = Group {\n" +
-                "  Background: (TexturePath: \"Common/ContainerFullPatch.png\", Border: 20);\n" +
-                "};\n" +
-                "\n" +
-                "@TitleLabel = Label {\n" +
-                "  Style: (FontSize: 40, Alignment: Center);\n" +
-                "};";
+        return """
+            @Panel = Group {
+              Background: (TexturePath: "Common/ContainerFullPatch.png", Border: 20);
+            };
+            
+            @TitleLabel = Label {
+              Style: (FontSize: 40, Alignment: Center);
+            };""";
     }
 
     @Override
@@ -43,14 +43,11 @@ public class UILanguageCodeStyleSettingsProvider extends LanguageCodeStyleSettin
         return new SmartIndentOptionsEditor();
     }
 
-    @Nullable
     @Override
-    public CommonCodeStyleSettings getDefaultCommonSettings() {
-        CommonCodeStyleSettings defaultSettings = new CommonCodeStyleSettings(UILanguage.INSTANCE);
-        CommonCodeStyleSettings.IndentOptions indentOptions = defaultSettings.initIndentOptions();
+    public void customizeDefaults(@NotNull CommonCodeStyleSettings commonSettings,
+        @NotNull CommonCodeStyleSettings.IndentOptions indentOptions) {
         indentOptions.INDENT_SIZE = 2;
         indentOptions.CONTINUATION_INDENT_SIZE = 2;
         indentOptions.TAB_SIZE = 2;
-        return defaultSettings;
     }
 }

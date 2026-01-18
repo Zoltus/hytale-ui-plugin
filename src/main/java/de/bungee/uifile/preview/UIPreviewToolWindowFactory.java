@@ -17,12 +17,11 @@ public class UIPreviewToolWindowFactory implements ToolWindowFactory, DumbAware 
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        UIPreviewPanel previewPanel = new UIPreviewPanel(project);
+        UIPreviewPanel previewPanel = new UIPreviewPanel();
         ContentFactory contentFactory = ContentFactory.getInstance();
         Content content = contentFactory.createContent(previewPanel, "", false);
         toolWindow.getContentManager().addContent(content);
 
-        // Listen für Dateiänderungen
         project.getMessageBus().connect().subscribe(
             FileEditorManagerListener.FILE_EDITOR_MANAGER,
             new FileEditorManagerListener() {
@@ -36,7 +35,6 @@ public class UIPreviewToolWindowFactory implements ToolWindowFactory, DumbAware 
             }
         );
 
-        // Initiale Vorschau für aktuell geöffnete Datei
         VirtualFile[] selectedFiles = FileEditorManager.getInstance(project).getSelectedFiles();
         if (selectedFiles.length > 0 && selectedFiles[0].getFileType() instanceof UIFileType) {
             previewPanel.updatePreview(selectedFiles[0]);
