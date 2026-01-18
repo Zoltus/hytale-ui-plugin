@@ -1,4 +1,3 @@
-css 
 $C = "../Common.ui";
 
 @SaveButtonStyle = TextButtonStyle(

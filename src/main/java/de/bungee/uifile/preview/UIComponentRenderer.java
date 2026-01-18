@@ -1,168 +1,145 @@
 package de.bungee.uifile.preview;
 
 import com.intellij.ui.JBColor;
-import com.intellij.ui.Gray;
-import com.intellij.util.ui.JBUI;
-
 import javax.swing.*;
 import java.awt.*;
+import java.awt.font.TextAttribute;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Renderer für UI-Komponenten im Preview-Panel
- */
 public class UIComponentRenderer extends JPanel {
-    private static final double ZOOM_FACTOR = 0.1;
-    private static final double MIN_SCALE = 0.25;
-    private static final double MAX_SCALE = 3.0;
-    private static final int COMPONENT_SPACING = 20;
-    private static final int PADDING = 40;
-    private static final int GRID_SIZE = 20;
-    private static final int DEFAULT_WIDTH = 400;
-    private static final int DEFAULT_HEIGHT = 300;
-
-    private static final JBColor BACKGROUND_COLOR = new JBColor(new Color(40, 44, 52), new Color(40, 44, 52));
-    private static final JBColor GRID_COLOR = new JBColor(new Color(50, 54, 62), new Color(50, 54, 62));
-    private static final JBColor TEXT_COLOR = new JBColor(Gray._150, Gray._150);
-
     private UIModel model;
     private double scale = 1.0;
 
-    public UIComponentRenderer() {
-        setBackground(BACKGROUND_COLOR);
-        setBorder(JBUI.Borders.empty(COMPONENT_SPACING));
-    }
-
     public void setModel(UIModel model) {
         this.model = model;
-        updatePreferredSize();
-        revalidate();
-        repaint();
-    }
-
-    public void zoomIn() {
-        if (scale < MAX_SCALE) {
-            scale += ZOOM_FACTOR;
-            updateViewport();
-        }
-    }
-
-    public void zoomOut() {
-        if (scale > MIN_SCALE) {
-            scale -= ZOOM_FACTOR;
-            updateViewport();
-        }
-    }
-
-    public void resetZoom() {
-        scale = 1.0;
-        updateViewport();
-    }
-
-    private void updateViewport() {
-        updatePreferredSize();
-        revalidate();
-        repaint();
-    }
-
-    private void updatePreferredSize() {
-        if (model != null && !model.getComponents().isEmpty()) {
-            int maxWidth = 0;
-            int totalHeight = 0;
-
-            for (UIModel.UIComponent component : model.getComponents()) {
-                if (component instanceof UIModel.GroupComponent group) {
-                    maxWidth = Math.max(maxWidth, (int) (group.getWidth() * scale));
-                    totalHeight += (int) (group.getHeight() * scale) + COMPONENT_SPACING;
-                }
-            }
-
-            setPreferredSize(new Dimension(maxWidth + PADDING * 2, totalHeight + PADDING * 2));
-        } else {
-            setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-        }
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        if (model == null || model.getComponents().isEmpty()) {
-            drawEmptyState(g);
+        if (model == null) {
             return;
         }
 
-        Graphics2D g2d = (Graphics2D) g.create();
-        try {
-            // Aktiviere Anti-Aliasing für professionelles Aussehen
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2.scale(scale, scale);
 
-            // Zeichne Grid im Hintergrund (optional)
-            drawGrid(g2d);
+        for (UIModel.GroupComponent group : model.getTopLevelGroups()) {
+            layoutGroup(group, 0, 0, group.prefWidth, group.prefHeight);
+            drawComponent(g2, group);
+        }
+    }
 
-            // Rendere alle Komponenten
-            int y = PADDING;
-            for (UIModel.UIComponent component : model.getComponents()) {
-                component.render(g2d, PADDING, y, scale);
-                y += (int) (200 * scale) + COMPONENT_SPACING; // Abstand zwischen Groups
+    private void layoutGroup(UIModel.GroupComponent parent, int x, int y, int width, int height) {
+        parent.setBounds(x, y, width, height);
+        int pad = parent.getPadding();
+        int innerX = x + pad;
+        int innerY = y + pad;
+        int innerW = width - (2 * pad);
+        int innerH = height - (2 * pad);
+
+        String mode = parent.getLayoutMode();
+
+        // 1. Berechne festen Platzbedarf und Flex-Summe
+        float totalFlex = 0;
+        int fixedSize = 0;
+        for (UIModel.Component child : parent.getChildren()) {
+            totalFlex += child.flexWeight;
+            if (child.flexWeight == 0) {
+                fixedSize += (mode.equals("Left") || mode.equals("Right")) ? child.prefWidth : child.prefHeight;
+            }
+        }
+
+        // 2. Verteile restlichen Platz
+        int availableSpace = (mode.equals("Left") || mode.equals("Right")) ? innerW : innerH;
+        int remainingSpace = Math.max(0, availableSpace - fixedSize);
+
+        int currentPos = (mode.equals("Left") || mode.equals("Top")) ? 0 : remainingSpace;
+
+        for (UIModel.Component child : parent.getChildren()) {
+            int childW = innerW;
+            int childH = innerH;
+            int size = (child.flexWeight > 0) ? (int) (remainingSpace * (child.flexWeight / totalFlex))
+                : (mode.equals("Left") || mode.equals("Right") ? child.prefWidth : child.prefHeight);
+
+            if (mode.equals("Left") || mode.equals("Right")) {
+                child.setBounds(innerX + currentPos, innerY, size, innerH);
+                currentPos += size;
+            } else {
+                child.setBounds(innerX, innerY + currentPos, innerW, size);
+                currentPos += size;
             }
 
-            // Zoom-Level anzeigen
-            drawZoomIndicator(g2d);
-        } finally {
-            g2d.dispose();
+            if (child instanceof UIModel.GroupComponent) {
+                layoutGroup((UIModel.GroupComponent) child, child.x, child.y, child.width, child.height);
+            }
         }
     }
 
-    private void drawEmptyState(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g.create();
-        try {
-            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    private void drawComponent(Graphics2D g, UIModel.Component c) {
+        if (c.background != null) {
+            g.setColor(c.background);
+            g.fillRect(c.x, c.y, c.width, c.height);
+        }
 
-            String message = "Öffnen Sie eine .ui-Datei, um die Vorschau zu sehen";
-            Font font = new Font("Segoe UI", Font.PLAIN, 14);
-            g2d.setFont(font);
-            g2d.setColor(TEXT_COLOR);
-
-            FontMetrics fm = g2d.getFontMetrics();
-            int textWidth = fm.stringWidth(message);
-            int x = (getWidth() - textWidth) / 2;
-            int y = getHeight() / 2;
-
-            g2d.drawString(message, x, y);
-        } finally {
-            g2d.dispose();
+        if (c instanceof UIModel.LabelComponent label) {
+            drawLabel(g, label);
+        } else if (c instanceof UIModel.ButtonComponent btn) {
+            drawButton(g, btn);
+        } else if (c instanceof UIModel.GroupComponent group) {
+            for (UIModel.Component child : group.getChildren()) {
+                drawComponent(g, child);
+            }
         }
     }
 
-    private void drawGrid(Graphics2D g2d) {
-        g2d.setColor(GRID_COLOR);
-        g2d.setStroke(new BasicStroke(0.5f));
-
-        int gridSize = (int) (GRID_SIZE * scale);
-
-        // Vertikale Linien
-        for (int x = 0; x < getWidth(); x += gridSize) {
-            g2d.drawLine(x, 0, x, getHeight());
+    private void drawLabel(Graphics2D g, UIModel.LabelComponent l) {
+        Map<TextAttribute, Object> attributes = new HashMap<>();
+        attributes.put(TextAttribute.SIZE, (float) l.getFontSize());
+        attributes.put(TextAttribute.WEIGHT, l.isBold() ? TextAttribute.WEIGHT_BOLD : TextAttribute.WEIGHT_REGULAR);
+        if (l.getLetterSpacing() > 0) {
+            attributes.put(TextAttribute.TRACKING, l.getLetterSpacing() * 0.1f);
         }
 
-        // Horizontale Linien
-        for (int y = 0; y < getHeight(); y += gridSize) {
-            g2d.drawLine(0, y, getWidth(), y);
+        g.setFont(Font.getFont(attributes));
+        g.setColor(l.getTextColor());
+
+        FontMetrics fm = g.getFontMetrics();
+        int textX = l.x;
+        if ("Center".equalsIgnoreCase(l.getAlignment())) {
+            textX = l.x + (l.width - fm.stringWidth(l.getText())) / 2;
         }
+        g.drawString(l.getText(), textX, l.y + fm.getAscent() + (l.height - fm.getHeight()) / 2);
     }
 
-    private void drawZoomIndicator(Graphics2D g2d) {
-        String zoomText = String.format("%.0f%%", scale * 100);
-        Font font = new Font("Segoe UI", Font.PLAIN, 11);
-        g2d.setFont(font);
-        g2d.setColor(TEXT_COLOR);
+    private void drawButton(Graphics2D g, UIModel.ButtonComponent b) {
+        g.setColor(new JBColor(new Color(43, 53, 66), new Color(43, 53, 66)));
+        g.fillRoundRect(b.x, b.y, b.width, b.height, 4, 4);
+        g.setColor(Color.WHITE);
+        Font f = g.getFont();
+        g.setFont(f.deriveFont(Font.BOLD, 12f));
+        FontMetrics fm = g.getFontMetrics();
+        g.drawString(b.getText(), b.x + (b.width - fm.stringWidth(b.getText())) / 2,
+            b.y + (b.height + fm.getAscent()) / 2 - 2);
+    }
 
-        FontMetrics fm = g2d.getFontMetrics();
-        int textWidth = fm.stringWidth(zoomText);
+    // Zoom-Methoden
+    public void zoomIn() {
+        scale *= 1.1;
+        repaint();
+    }
 
-        g2d.drawString(zoomText, getWidth() - textWidth - 10, getHeight() - 10);
+    public void zoomOut() {
+        scale /= 1.1;
+        repaint();
+    }
+
+    public void resetZoom() {
+        scale = 1.0;
+        repaint();
     }
 }
-
