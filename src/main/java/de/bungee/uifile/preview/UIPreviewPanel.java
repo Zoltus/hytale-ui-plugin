@@ -1,6 +1,7 @@
 package de.bungee.uifile.preview;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
@@ -8,37 +9,37 @@ import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.JBColor;
+import com.intellij.ui.components.JBScrollPane;
 import com.intellij.util.ui.JBUI;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
 public class UIPreviewPanel extends JPanel {
-    private final Project project;
+    private static final Logger LOG = Logger.getInstance(UIPreviewPanel.class);
+    private static final int SCROLL_UNIT_INCREMENT = 16;
+
     private final UIComponentRenderer renderer;
-    private final JScrollPane scrollPane;
-    private VirtualFile currentFile;
     private Document currentDocument;
     private DocumentListener documentListener;
 
     public UIPreviewPanel(Project project) {
         super(new BorderLayout());
-        this.project = project;
         this.renderer = new UIComponentRenderer();
 
         // Renderer in ScrollPane einbetten
-        scrollPane = new JScrollPane(renderer);
+        JBScrollPane scrollPane = new JBScrollPane(renderer);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(SCROLL_UNIT_INCREMENT);
+        scrollPane.getHorizontalScrollBar().setUnitIncrement(SCROLL_UNIT_INCREMENT);
 
         add(scrollPane, BorderLayout.CENTER);
 
         // Toolbar mit Zoom-Buttons
-        JPanel toolbar = createToolbar();
-        add(toolbar, BorderLayout.NORTH);
+        add(createToolbar(), BorderLayout.NORTH);
 
         setBorder(JBUI.Borders.empty());
         setBackground(JBColor.background());
@@ -68,44 +69,60 @@ public class UIPreviewPanel extends JPanel {
         return toolbar;
     }
 
-    public void updatePreview(VirtualFile file) {
-        if (file == null) return;
-
-        // Entferne alten DocumentListener
-        if (currentDocument != null && documentListener != null) {
-            currentDocument.removeDocumentListener(documentListener);
+    public void updatePreview(@Nullable VirtualFile file) {
+        if (file == null) {
+            return;
         }
 
-        currentFile = file;
+        // Entferne alten DocumentListener
+        removeCurrentDocumentListener();
 
         try {
             String content = new String(file.contentsToByteArray(), file.getCharset());
             renderContent(content);
 
             // Füge neuen DocumentListener hinzu für Echtzeit-Updates
-            Document document = FileDocumentManager.getInstance().getDocument(file);
-            if (document != null) {
-                currentDocument = document;
-                documentListener = new DocumentListener() {
-                    @Override
-                    public void documentChanged(@NotNull DocumentEvent event) {
-                        ApplicationManager.getApplication().invokeLater(() -> {
-                            String updatedContent = document.getText();
-                            renderContent(updatedContent);
-                        });
-                    }
-                };
-                currentDocument.addDocumentListener(documentListener);
-            }
+            attachDocumentListener(file);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("Failed to load preview for file: " + file.getPath(), e);
         }
     }
 
-    private void renderContent(String content) {
+    private void removeCurrentDocumentListener() {
+        if (currentDocument != null && documentListener != null) {
+            currentDocument.removeDocumentListener(documentListener);
+            documentListener = null;
+        }
+    }
+
+    private void attachDocumentListener(@NotNull VirtualFile file) {
+        Document document = FileDocumentManager.getInstance().getDocument(file);
+        if (document != null) {
+            currentDocument = document;
+            documentListener = new DocumentListener() {
+                @Override
+                public void documentChanged(@NotNull DocumentEvent event) {
+                    ApplicationManager.getApplication().invokeLater(() ->
+                        renderContent(document.getText())
+                    );
+                }
+            };
+            currentDocument.addDocumentListener(documentListener);
+        }
+    }
+
+    private void renderContent(@NotNull String content) {
         UIModel model = UIModelParser.parse(content);
         renderer.setModel(model);
         renderer.repaint();
+    }
+
+    /**
+     * Cleanup-Methode zum Entfernen von Listeners
+     */
+    public void dispose() {
+        removeCurrentDocumentListener();
+        currentDocument = null;
     }
 }
 

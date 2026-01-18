@@ -11,12 +11,12 @@ public class UIParser implements PsiParser {
     @Override
     public ASTNode parse(@NotNull IElementType root, @NotNull PsiBuilder builder) {
         final PsiBuilder.Marker rootMarker = builder.mark();
-        
+
         // Einfacher Parser - akzeptiert alle Tokens
         while (!builder.eof()) {
             builder.advanceLexer();
         }
-        
+
         rootMarker.done(root);
         return builder.getTreeBuilt();
     }

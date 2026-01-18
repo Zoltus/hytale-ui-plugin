@@ -12,12 +12,17 @@ import java.util.regex.Pattern;
 public class UIModelParser {
 
     private static final Pattern GROUP_PATTERN = Pattern.compile("Group\\s*(?:#\\w+)?\\s*\\{", Pattern.DOTALL);
-    private static final Pattern LABEL_PATTERN = Pattern.compile("Label\\s*(?:#\\w+)?\\s*\\{([^}]+)\\}", Pattern.DOTALL);
-    private static final Pattern BUTTON_PATTERN = Pattern.compile("(?:Text)?Button\\s*(?:#\\w+)?\\s*\\{([^}]+)\\}", Pattern.DOTALL);
-    private static final Pattern TEXTFIELD_PATTERN = Pattern.compile("(?:\\$\\w+\\.)?(?:@)?TextField\\s*(?:#\\w+)?\\s*\\{([^}]+)\\}", Pattern.DOTALL);
+    private static final Pattern LABEL_PATTERN = Pattern.compile("Label\\s*(?:#\\w+)?\\s*\\{([^}]+)\\}",
+        Pattern.DOTALL);
+    private static final Pattern BUTTON_PATTERN = Pattern.compile("(?:Text)?Button\\s*(?:#\\w+)?\\s*\\{([^}]+)\\}",
+        Pattern.DOTALL);
+    private static final Pattern TEXTFIELD_PATTERN = Pattern.compile(
+        "(?:\\$\\w+\\.)?(?:@)?TextField\\s*(?:#\\w+)?\\s*\\{([^}]+)\\}", Pattern.DOTALL);
 
-    private static final Pattern ANCHOR_PATTERN = Pattern.compile("Anchor:\\s*\\(\\s*(?:Width:\\s*(\\d+)\\s*,?\\s*)?(?:Height:\\s*(\\d+))?\\s*\\)");
-    private static final Pattern BACKGROUND_PATTERN = Pattern.compile("Background:\\s*(#[0-9a-fA-F]{6})(?:\\([0-9.]+\\))?");
+    private static final Pattern ANCHOR_PATTERN = Pattern.compile(
+        "Anchor:\\s*\\(\\s*(?:Width:\\s*(\\d+)\\s*,?\\s*)?(?:Height:\\s*(\\d+))?\\s*\\)");
+    private static final Pattern BACKGROUND_PATTERN = Pattern.compile(
+        "Background:\\s*(#[0-9a-fA-F]{6})(?:\\([0-9.]+\\))?");
     private static final Pattern PADDING_PATTERN = Pattern.compile("Padding:\\s*\\(\\s*Full:\\s*(\\d+)\\s*\\)");
     private static final Pattern TEXT_PATTERN = Pattern.compile("Text:\\s*\"([^\"]+)\"");
     private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("PlaceholderText:\\s*\"([^\"]+)\"");
@@ -38,15 +43,21 @@ public class UIModelParser {
         int pos = 0;
         while (pos < content.length()) {
             int groupStart = content.indexOf("Group", pos);
-            if (groupStart == -1) break;
+            if (groupStart == -1) {
+                break;
+            }
 
             // Finde die öffnende Klammer
             int braceStart = content.indexOf("{", groupStart);
-            if (braceStart == -1) break;
+            if (braceStart == -1) {
+                break;
+            }
 
             // Finde die schließende Klammer (mit Bracket-Counting für verschachtelte Strukturen)
             int braceEnd = findMatchingBrace(content, braceStart);
-            if (braceEnd == -1) break;
+            if (braceEnd == -1) {
+                break;
+            }
 
             String groupContent = content.substring(braceStart + 1, braceEnd);
             UIModel.GroupComponent group = parseGroup(groupContent);
@@ -64,8 +75,11 @@ public class UIModelParser {
 
         while (pos < content.length() && braceCount > 0) {
             char c = content.charAt(pos);
-            if (c == '{') braceCount++;
-            else if (c == '}') braceCount--;
+            if (c == '{') {
+                braceCount++;
+            } else if (c == '}') {
+                braceCount--;
+            }
             pos++;
         }
 
@@ -133,13 +147,19 @@ public class UIModelParser {
         int pos = 0;
         while (pos < content.length()) {
             int groupStart = content.indexOf("Group", pos);
-            if (groupStart == -1) break;
+            if (groupStart == -1) {
+                break;
+            }
 
             int braceStart = content.indexOf("{", groupStart);
-            if (braceStart == -1) break;
+            if (braceStart == -1) {
+                break;
+            }
 
             int braceEnd = findMatchingBrace(content, braceStart);
-            if (braceEnd == -1) break;
+            if (braceEnd == -1) {
+                break;
+            }
 
             String groupContent = content.substring(braceStart + 1, braceEnd);
             // Nur als Spacer verwenden, wenn es eine einfache Group ist

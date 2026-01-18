@@ -7,16 +7,7 @@ import java.util.*;
  */
 public class UITypeDefinitions {
 
-    public static class PropertyInfo {
-        public final String name;
-        public final String description;
-        public final String valueType;
-
-        public PropertyInfo(String name, String description, String valueType) {
-            this.name = name;
-            this.description = description;
-            this.valueType = valueType;
-        }
+    public record PropertyInfo(String name, String description, String valueType) {
     }
 
     private static final Map<String, List<PropertyInfo>> UI_TYPES = new HashMap<>();

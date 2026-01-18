@@ -13,18 +13,18 @@ import java.util.Map;
 
 public class UIColorSettingsPage implements ColorSettingsPage {
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
-            new AttributesDescriptor("Component", UISyntaxHighlighter.COMPONENT),
-            new AttributesDescriptor("Property", UISyntaxHighlighter.PROPERTY),
-            new AttributesDescriptor("String", UISyntaxHighlighter.STRING),
-            new AttributesDescriptor("Number", UISyntaxHighlighter.NUMBER),
-            new AttributesDescriptor("Color", UISyntaxHighlighter.COLOR),
-            new AttributesDescriptor("Identifier", UISyntaxHighlighter.IDENTIFIER),
-            new AttributesDescriptor("Comment", UISyntaxHighlighter.COMMENT),
-            new AttributesDescriptor("Braces", UISyntaxHighlighter.BRACES),
-            new AttributesDescriptor("Parentheses", UISyntaxHighlighter.PARENTHESES),
-            new AttributesDescriptor("Colon", UISyntaxHighlighter.COLON),
-            new AttributesDescriptor("Semicolon", UISyntaxHighlighter.SEMICOLON),
-            new AttributesDescriptor("Comma", UISyntaxHighlighter.COMMA),
+        new AttributesDescriptor("Component", UISyntaxHighlighter.COMPONENT),
+        new AttributesDescriptor("Property", UISyntaxHighlighter.PROPERTY),
+        new AttributesDescriptor("String", UISyntaxHighlighter.STRING),
+        new AttributesDescriptor("Number", UISyntaxHighlighter.NUMBER),
+        new AttributesDescriptor("Color", UISyntaxHighlighter.COLOR),
+        new AttributesDescriptor("Identifier", UISyntaxHighlighter.IDENTIFIER),
+        new AttributesDescriptor("Comment", UISyntaxHighlighter.COMMENT),
+        new AttributesDescriptor("Braces", UISyntaxHighlighter.BRACES),
+        new AttributesDescriptor("Parentheses", UISyntaxHighlighter.PARENTHESES),
+        new AttributesDescriptor("Colon", UISyntaxHighlighter.COLON),
+        new AttributesDescriptor("Semicolon", UISyntaxHighlighter.SEMICOLON),
+        new AttributesDescriptor("Comma", UISyntaxHighlighter.COMMA),
     };
 
     @Nullable
@@ -43,26 +43,26 @@ public class UIColorSettingsPage implements ColorSettingsPage {
     @Override
     public String getDemoText() {
         return """
-                // UI Definition Example
-                Group {
-                  Anchor: (Width: 400, Height: 250);
-                  Background: #1a1a2e;
-                  LayoutMode: Top;
-                  Padding: (Full: 20);
-                
-                  Label #Title {
-                    Text: "Hello World!";
-                    Anchor: (Height: 40);
-                    Style: (FontSize: 24, TextColor: #ffffff, Alignment: Center);
-                  }
-                  
-                  Button #SubmitButton {
-                    Text: "Click Me";
-                    Anchor: (Width: 150, Height: 35);
-                    Background: #0066cc;
-                  }
-                }
-                """;
+            // UI Definition Example
+            Group {
+              Anchor: (Width: 400, Height: 250);
+              Background: #1a1a2e;
+              LayoutMode: Top;
+              Padding: (Full: 20);
+            
+              Label #Title {
+                Text: "Hello World!";
+                Anchor: (Height: 40);
+                Style: (FontSize: 24, TextColor: #ffffff, Alignment: Center);
+              }
+            
+              Button #SubmitButton {
+                Text: "Click Me";
+                Anchor: (Width: 150, Height: 35);
+                Background: #0066cc;
+              }
+            }
+            """;
     }
 
     @Nullable

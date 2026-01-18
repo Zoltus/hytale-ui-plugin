@@ -10,7 +10,6 @@ import de.bungee.uifile.UILanguage;
 import de.bungee.uifile.completion.UITypeDefinitions.PropertyInfo;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.*;
 import java.util.List;
 
 /**
@@ -104,7 +103,7 @@ public class UICompletionContributor extends CompletionContributor {
                     .withPresentableText(type)
                     .withTypeText("UI Component")
                     .withInsertHandler((insertContext, item) -> {
-                        // Move cursor inside the braces
+                        // Move the cursor inside the braces
                         int offset = insertContext.getEditor().getCaretModel().getOffset();
                         insertContext.getEditor().getCaretModel().moveToOffset(offset - 2);
                     })
@@ -124,11 +123,11 @@ public class UICompletionContributor extends CompletionContributor {
 
             result.addElement(
                 LookupElementBuilder.create(insertText)
-                    .withPresentableText(prop.name)
-                    .withTypeText(prop.valueType)
-                    .withTailText(": " + prop.description, true)
+                    .withPresentableText(prop.name())
+                    .withTypeText(prop.valueType())
+                    .withTailText(": " + prop.description(), true)
                     .withInsertHandler((insertContext, item) -> {
-                        // Move cursor to the value position
+                        // Move the cursor to the value position
                         int offset = insertContext.getEditor().getCaretModel().getOffset();
                         String text = insertContext.getDocument().getText();
 
@@ -143,19 +142,18 @@ public class UICompletionContributor extends CompletionContributor {
     }
 
     /**
-     * Generate appropriate insert text based on property type
+     * Generate appropriate insert text based on a property type
      */
     private String getInsertTextForProperty(PropertyInfo prop) {
-        return switch (prop.valueType) {
-            case "color" -> prop.name + ": #";
-            case "string" -> prop.name + ": \"\";";
-            case "number" -> prop.name + ": 0;";
-            case "boolean" -> prop.name + ": true;";
-            case "style block" -> prop.name + ": ();";
-            case "padding value" -> prop.name + ": (Full: 0);";
-            case "margin value" -> prop.name + ": (Full: 0);";
-            case "anchor value" -> prop.name + ": (Width: 0, Height: 0);";
-            default -> prop.name + ": ;";
+        return switch (prop.valueType()) {
+            case "color" -> prop.name() + ": #";
+            case "string" -> prop.name() + ": \"\";";
+            case "number" -> prop.name() + ": 0;";
+            case "boolean" -> prop.name() + ": true;";
+            case "style block" -> prop.name() + ": ();";
+            case "padding value", "margin value" -> prop.name() + ": (Full: 0);";
+            case "anchor value" -> prop.name() + ": (Width: 0, Height: 0);";
+            default -> prop.name() + ": ;";
         };
     }
 }
