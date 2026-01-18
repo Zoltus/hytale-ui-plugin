@@ -44,7 +44,6 @@ public class UIModel {
             this.background = c;
         }
 
-        // Getter/Setter für Bounds
         public Rectangle getBounds() {
             return new Rectangle(x, y, width, height);
         }
@@ -58,7 +57,7 @@ public class UIModel {
     }
 
     public static class GroupComponent extends Component {
-        private String layoutMode = "Top"; // "Top", "Left", "Right"
+        private String layoutMode = "Top";
         private int padding = 0;
         private final List<Component> children = new ArrayList<>();
 
@@ -96,7 +95,6 @@ public class UIModel {
         private float letterSpacing = 0;
         private String alignment = "Left";
 
-        // Getter & Setter für alle Attribute (Text, Style, Alignment)
         public void setText(String t) {
             this.text = t;
         }
