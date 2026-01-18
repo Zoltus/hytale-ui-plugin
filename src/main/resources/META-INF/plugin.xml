@@ -99,4 +99,13 @@
       language="UI"
       implementationClass="de.bungee.uifile.completion.UICompletionContributor"/>
   </extensions>
+  <actions>
+    <action id="de.bungee.uifile.action.uiFileAction"
+            class="de.bungee.uifile.action.UIFileAction"
+            text="UI File"
+            description="Create a new .ui file"
+            icon="/icons/uiFile.svg">
+      <add-to-group group-id="NewGroup" anchor="last"/>
+    </action>
+  </actions>
 </idea-plugin>
