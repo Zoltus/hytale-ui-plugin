@@ -68,18 +68,35 @@ jobs:
         id: release_notes
         run: |
           VERSION="${{ steps.version.outputs.version }}"
-          # Extrahiere den Changelog-Abschnitt für diese Version
-          NOTES=$(awk "/## \[$VERSION\]/,/## \[/" CHANGELOG.md | sed '$d' | tail -n +2)
           
-          # Fallback auf automatisch generierte Notes, wenn keine gefunden
-          if [ -z "$NOTES" ]; then
-            echo "Keine spezifischen Release Notes in CHANGELOG.md gefunden für Version $VERSION"
+          # Extrahiere den Changelog-Abschnitt für diese Version
+          NOTES=$(awk "/## \[$VERSION\]/,/## \[/" CHANGELOG.md | sed '$d' | tail -n +2 | sed '/^$/d' | sed 's/^[[:space:]]*//')
+          
+          # Debug-Ausgabe
+          echo "Suche nach Version: $VERSION"
+          echo "Gefundene Notes:"
+          echo "$NOTES"
+          
+          # Prüfe ob Notes gefunden wurden (nicht nur Leerzeichen)
+          if [ -z "$(echo "$NOTES" | tr -d '[:space:]')" ]; then
+            echo "⚠️ Keine spezifischen Release Notes in CHANGELOG.md gefunden für Version $VERSION"
+            echo "Verwende automatisch generierte Release Notes von GitHub"
             echo "use_auto_notes=true" >> $GITHUB_OUTPUT
+            echo "notes=" >> $GITHUB_OUTPUT
           else
-            # Escape für GitHub Actions Output
-            echo "notes<<EOF" >> $GITHUB_OUTPUT
-            echo "$NOTES" >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
+            echo "✅ Release Notes erfolgreich aus CHANGELOG.md extrahiert"
+            # Escape für GitHub Actions Output mit multiline string
+            {
+              echo "notes<<EOF"
+              echo "## Release Notes v$VERSION"
+              echo ""
+              echo "$NOTES"
+              echo ""
+              echo "---"
+              echo ""
+              echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/v${{ steps.version.outputs.version }}...HEAD"
+              echo "EOF"
+            } >> $GITHUB_OUTPUT
             echo "use_auto_notes=false" >> $GITHUB_OUTPUT
           fi
 
@@ -88,7 +105,7 @@ jobs:
         with:
           files: build/distributions/*.zip
           body: ${{ steps.release_notes.outputs.notes }}
-          generate_release_notes: ${{ steps.release_notes.outputs.use_auto_notes }}
+          generate_release_notes: false
           draft: false
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') || contains(github.ref, 'rc') }}
           fail_on_unmatched_files: true
