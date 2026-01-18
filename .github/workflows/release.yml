@@ -64,11 +64,31 @@ jobs:
         id: version
         run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
 
+      - name: Extract Release Notes
+        id: release_notes
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          # Extrahiere den Changelog-Abschnitt für diese Version
+          NOTES=$(awk "/## \[$VERSION\]/,/## \[/" CHANGELOG.md | sed '$d' | tail -n +2)
+          
+          # Fallback auf automatisch generierte Notes, wenn keine gefunden
+          if [ -z "$NOTES" ]; then
+            echo "Keine spezifischen Release Notes in CHANGELOG.md gefunden für Version $VERSION"
+            echo "use_auto_notes=true" >> $GITHUB_OUTPUT
+          else
+            # Escape für GitHub Actions Output
+            echo "notes<<EOF" >> $GITHUB_OUTPUT
+            echo "$NOTES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            echo "use_auto_notes=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           files: build/distributions/*.zip
-          generate_release_notes: true
+          body: ${{ steps.release_notes.outputs.notes }}
+          generate_release_notes: ${{ steps.release_notes.outputs.use_auto_notes }}
           draft: false
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') || contains(github.ref, 'rc') }}
           fail_on_unmatched_files: true
