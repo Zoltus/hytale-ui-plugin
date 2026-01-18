@@ -23,19 +23,28 @@
   <change-notes><![CDATA[
     <h3>Version 1.2.0</h3>
     <ul>
-      <li>Added Live Preview Tool Window for visual rendering of .ui files</li>
+      <li><b>NEW: Live Preview Tool Window</b> - Visual rendering of .ui files with real-time updates</li>
       <li>Real-time preview updates while typing in the editor</li>
       <li>Professional UI component rendering (Group, Label, Button, TextField)</li>
       <li>Zoom controls (+, -, Reset to 100%)</li>
       <li>Accurate color and size rendering from .ui syntax</li>
       <li>Preview panel positioned on the right side of the IDE</li>
+      <li><b>NEW: Create New UI File Action</b> - Right-click context menu to create .ui files</li>
+      <li>Automatic .ui extension handling for new files</li>
+      <li>Smart directory detection (selected folder, parent directory, or project root)</li>
+      <li><b>NEW: Plugin Settings Page</b> - Configure UI File plugin behavior</li>
+      <li>Toggle "New File" action on/off in settings</li>
+      <li>Settings accessible via Settings → Tools → Hytale UI File</li>
+      <li><b>FIXED:</b> Improved directory determination logic for new file creation</li>
+      <li><b>FIXED:</b> Enhanced error handling for invalid directory scenarios</li>
+      <li><b>FIXED:</b> Resource bundle integration for internationalization support</li>
     </ul>
     <h3>Version 1.1.0</h3>
     <ul>
       <li><b>NEW: IntelliSense/Code Completion</b> - Comprehensive auto-completion support for UI files</li>
       <li>Component type suggestions (Group, Label, Button, TextField, Image, CheckBox, Slider, Panel, ScrollView)</li>
       <li>Context-aware property suggestions based on current component type</li>
-      <li>Property descriptions and type information in completion popup</li>
+      <li>Property descriptions and type information in the completion popup</li>
       <li>Smart value templates for different property types (colors, strings, numbers, etc.)</li>
       <li>Automatic cursor positioning after insertion</li>
       <li>Extended property definitions for all UI component types</li>
@@ -44,7 +53,7 @@
     <ul>
       <li>Version update to 1.0.3</li>
       <li>Minor bug fixes and performance improvements</li>
-      <li>Added build script for Github Releases</li>
+      <li>Added a build script for GitHub Releases</li>
     </ul>
     <h3>Version 1.0.2</h3>
     <ul>
@@ -108,6 +117,26 @@
       icon="AllIcons.Actions.Preview"
       factoryClass="de.bungee.uifile.preview.UIPreviewToolWindowFactory"/>
 
+    <!-- Settings Service -->
+    <applicationService
+      serviceInterface="de.bungee.uifile.settings.UIFileSettings"
+      serviceImplementation="de.bungee.uifile.settings.UIFileSettings"/>
+
+    <!-- Settings Page -->
+    <applicationConfigurable
+      parentId="tools"
+      instance="de.bungee.uifile.settings.UIFileSettingsConfigurable"
+      id="de.bungee.uifile.settings.UIFileSettingsConfigurable"
+      key="settings.displayName"
+      bundle="messages.UIFileBundle"/>
   </extensions>
 
+  <actions>
+    <!-- New UI File Action -->
+    <action id="de.bungee.uifile.action.UIFileAction"
+      class="de.bungee.uifile.action.UIFileAction">
+      <add-to-group group-id="NewGroup" anchor="after"
+        relative-to-action="NewFile"/>
+    </action>
+  </actions>
 </idea-plugin>

@@ -1,24 +1,61 @@
-// UI File Example
+css 
+$C = "../Common.ui";
+
+@SaveButtonStyle = TextButtonStyle(
+    Default: (Background: #3a7bd5, LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+    Hovered: (Background: #4a8be5, LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+    Pressed: (Background: #2a6bc5, LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
 Group {
-  Anchor: (Width: 350, Height: 180);
-  Background: #1a1a2e;
-  Padding: (Full: 15);
+    Anchor: (Width: 400, Height: 350);
+    Background: #1a1a2e(0.95);
+    LayoutMode: Top;
+    Padding: (Full: 20);
 
-  Label {
-    Text: "Hello World!";
-    Style: (FontSize: 18, TextColor: #ffffff);
-  }
+    Label #Title {
+        Text: "Distance Settings";
+        Anchor: (Height: 40);
+        Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center);
+    }
 
-  Button {
-    Text: "Click Me";
-    Background: #0066cc;
-    Style: (TextColor: #ffffff);
-  }
+    Label #Subtitle {
+        Text: "Configure distance values";
+        Anchor: (Height: 25);
+        Style: (FontSize: 14, TextColor: #888888, HorizontalAlignment: Center);
+    }
 
-  TextField {
-    PlaceholderText: "Enter text...";
-    Background: #2d2d44;
-    Style: (TextColor: #ffffff);
-  }
+    Group { Anchor: (Height: 15); }
+
+    Label #HorizontalLabel {
+        Text: "Horizontal Distance:";
+        Anchor: (Height: 25);
+        Style: (FontSize: 16, TextColor: #cccccc);
+    }
+
+    $C.@TextField #HorizontalDistanceInput {
+        Anchor: (Height: 40);
+        PlaceholderText: "Enter horizontal distance...";
+    }
+
+    Group { Anchor: (Height: 15); }
+
+    Label #VerticalLabel {
+        Text: "Vertical Distance:";
+        Anchor: (Height: 25);
+        Style: (FontSize: 16, TextColor: #cccccc);
+    }
+
+    $C.@TextField #VerticalDistanceInput {
+        Anchor: (Height: 40);
+        PlaceholderText: "Enter vertical distance...";
+    }
+
+    Group { Anchor: (Height: 20); }
+
+    TextButton #SaveButton {
+        Anchor: (Height: 45);
+        Text: "Save Changes";
+        Style: @SaveButtonStyle;
+    }
 }
-

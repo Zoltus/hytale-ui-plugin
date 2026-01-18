@@ -4,7 +4,7 @@
     id("org.jetbrains.intellij.platform") version "2.10.5"
 }
 group = "de.bungee.idea.plugins.uifile"
-version = "1.1.0"
+version = "1.2.0"
 // Configure Java compatibility for JDK 17 (required by IntelliJ Platform 2025.1+)
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -43,7 +43,7 @@ configurations.all {
 }
 dependencies {
     intellijPlatform {
-        intellijIdeaUltimate("2025.1")
+        intellijIdeaCommunity("2025.1")
         bundledPlugins(listOf(/* Plugin Dependencies */))
     }
     testImplementation("junit:junit:4.13.2")
@@ -52,7 +52,7 @@ dependencies {
 intellijPlatform {
     buildSearchableOptions = false
     pluginConfiguration {
-        version = "1.1.0"
+        version = "1.2.0"
         ideaVersion {
             sinceBuild = "251"
             untilBuild = "253.*"

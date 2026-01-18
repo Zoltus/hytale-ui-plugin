@@ -6,11 +6,24 @@ An IntelliJ IDEA plugin that provides support for `.ui` files - a format for def
 
 ## Features
 
+✅ **Live Preview** - Real-time visual rendering of .ui files in a tool window  
 ✅ **Syntax Highlighting** - Color highlighting for components, properties, strings, and comments  
 ✅ **IntelliSense/Code Completion** - Auto-completion for UI component types and their properties with descriptions  
 ✅ **Color Preview** - Visual color squares in the gutter for hex color values  
 ✅ **Bracket Matching** - Automatic matching of `{}` and `()`  
 ✅ **Code Folding** - Collapse and expand nested blocks  
+✅ **New File Action** - Create new .ui files from context menu  
+✅ **Plugin Settings** - Configure plugin behavior via Settings → Tools → Hytale UI File  
+
+### Live Preview
+
+The plugin includes a powerful live preview feature:
+
+- **Visual Rendering**: See your UI components rendered in real-time
+- **Auto-Updates**: Preview updates automatically as you type
+- **Zoom Controls**: Zoom in/out or reset to 100% for better viewing
+- **Component Support**: Renders Group, Label, Button, and TextField components with accurate colors and sizes
+- **Docked Panel**: Preview appears on the right side of your IDE
 
 ### IntelliSense Features
 
