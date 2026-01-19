@@ -1,6 +1,7 @@
 ﻿<idea-plugin>
   <id>de.bungee.idea.plugins.uifile</id>
   <name>Hytale .ui Support</name>
+  <version>1.2.3</version>
   <vendor email="contact@lyndara.net"
     url="https://github.com/BungeeDEV/hytale-ui-plugin">
     BungeeDEV
@@ -22,6 +23,14 @@
     </ul>
     ]]></description>
   <change-notes><![CDATA[
+    <h3>Version 1.2.3</h3>
+    <ul>
+      <li><b>FIXED: Preview Rendering</b> - Improved UI preview panel rendering stability</li>
+      <li>Fixed zoom controls and keyboard shortcuts for preview panel</li>
+      <li>Enhanced toolbar button styling and layout in preview window</li>
+      <li>Improved zoom label positioning and visual feedback</li>
+      <li>Better handling of component bounds and layout calculations</li>
+    </ul>
     <h3>Version 1.2.2</h3>
     <ul>
       <li><b>NEW: Interactive Color Picker</b> - Click on color gutter icons to open color picker dialog</li>
@@ -121,10 +130,12 @@
       implementationClass="de.bungee.uifile.highlighter.UIColorAnnotator"/>
     <!-- Color Picker Intention -->
     <intentionAction>
+      <language>UI</language>
       <className>
         de.bungee.uifile.highlighter.UIColorChooserIntention
       </className>
-      <category>UI file</category>
+      <categoryKey>intention.category</categoryKey>
+      <bundleName>messages.UIFileBundle</bundleName>
     </intentionAction>
     <!-- Commenter -->
     <lang.commenter
@@ -153,7 +164,6 @@
 
     <!-- Settings Service -->
     <applicationService
-      serviceInterface="de.bungee.uifile.settings.UIFileSettings"
       serviceImplementation="de.bungee.uifile.settings.UIFileSettings"/>
 
     <!-- Settings Page -->

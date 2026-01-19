@@ -8,6 +8,24 @@ on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.3] - 2026-01-19
+
+### Fixed
+
+- **Preview Rendering Improvements**: Enhanced stability and
+  visual quality of the UI preview panel.
+    - Fixed zoom controls (+, -, Reset) functionality with
+      proper event handling.
+    - Improved keyboard shortcuts for zoom operations
+      (Ctrl+Plus, Ctrl+Minus, Ctrl+0).
+    - Enhanced toolbar button styling with better sizing and
+      hover effects.
+    - Fixed zoom label positioning and alignment in the
+      toolbar.
+    - Improved component bounds calculation and layout
+      handling.
+    - Better rendering of nested components and groups.
+
 ## [1.2.2] - 2026-01-18
 
 ### Added
